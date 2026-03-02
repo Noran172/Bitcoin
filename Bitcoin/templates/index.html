@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bitcoin Price Prediction App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #1e1e2f;
+            color: #f0c040;
+            min-height: 100vh;
+            padding-top: 40px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            max-width: 700px;
+        }
+        .btn-gold {
+            background-color: #f0c040;
+            color: #1e1e2f;
+            font-weight: bold;
+        }
+        .btn-gold:hover {
+            background-color: #d1a927;
+            color: #1e1e2f;
+        }
+        .form-label {
+            font-weight: 600;
+        }
+        .error-msg {
+            color: #ff4d4d;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+        .prediction {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 15px;
+            color: #f0c040;
+        }
+        img.plot {
+            max-width: 100%;
+            margin-top: 20px;
+            border: 2px solid #f0c040;
+            border-radius: 8px;
+        }
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #888;
+        }
+        a.link-gold {
+            color: #f0c040;
+            font-weight: 600;
+        }
+        a.link-gold:hover {
+            color: #d1a927;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center mb-4">Bitcoin Price Prediction App</h1>
+
+    {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+    {% endif %}
+
+    <form action="/predict" method="post" class="mb-4">
+        <div class="mb-3">
+            <label for="Open" class="form-label">Open Price (USD)</label>
+            <input type="number" step="any" min="0" class="form-control" id="Open" name="Open" placeholder="e.g., 27000" required />
+        </div>
+        <div class="mb-3">
+            <label for="High" class="form-label">High Price (USD)</label>
+            <input type="number" step="any" min="0" class="form-control" id="High" name="High" placeholder="e.g., 27500" required />
+        </div>
+        <div class="mb-3">
+            <label for="Low" class="form-label">Low Price (USD)</label>
+            <input type="number" step="any" min="0" class="form-control" id="Low" name="Low" placeholder="e.g., 26500" required />
+        </div>
+        <div class="mb-3">
+            <label for="Vol." class="form-label">Volume</label>
+            <input type="number" step="any" min="0" class="form-control" id="Vol." name="Vol." placeholder="e.g., 5000000" required />
+        </div>
+        <button type="submit" class="btn btn-gold w-100">Predict Price</button>
+    </form>
+
+    {% if prediction is not none %}
+        <div class="prediction text-center">
+            Predicted Bitcoin Price: <strong>${{ prediction }}</strong>
+        </div>
+    {% endif %}
+
+    {% if show_plot %}
+        <img src="{{ url_for('static', filename='plot.png') }}" alt="Prediction Plot" class="plot" />
+    {% endif %}
+
+    <div class="mt-4 text-center">
+        <a href="/download_csv" class="link-gold me-3">Download Predictions CSV</a> |
+        <a href="/download_data" class="link-gold ms-3">Download Historical Data CSV</a>
+    </div>
+
+    <footer>
+        &copy; 2025 Bitcoin Prediction App | Developed by You
+    </footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
